@@ -64,6 +64,23 @@ class OptionMenu(ttk.OptionMenu):
         self.output_label['text'] = f'You selected: {self.option_var.get()}'
 
 
+class TableFrame(ttk.Frame):
+    def __init__(self, container):
+        super().__init__(container)
+        # field options
+        options = {'padx': 0, 'pady': 0, 'ipadx': 10, 'ipady': 10}
+        state = "012345678"
+        index = 0
+        for i in range(3):
+            for j in range(3):
+                puzzle_entry = ttk.Button(self, text=state[index])
+                puzzle_entry.grid(column=j, row=i, **options)
+                index = index + 1
+
+        # add padding to the frame and show it
+        self.grid(padx=10, pady=10, sticky=tk.NSEW)
+
+
 class App(tk.Tk):
     def __init__(self):
         super().__init__()
@@ -87,24 +104,11 @@ class App(tk.Tk):
         # set the position of the window to the center of the screen
         self.geometry(f'{window_width}x{window_height}+{center_x}+{center_y}')
 
-    def create_table(self):
-        # cell options
-        options = {'padx': 5, 'pady': 5}
-
-        for i in range(3):
-            for j in range(3):
-                puzzle_entry = ttk.Button(self, text='1')
-                puzzle_entry.grid(column=j, row=i, **options)
-
 
 if __name__ == "__main__":
     app = App()
     OptionMenu(app)
     InitialStateFrame(app)
-
+    TableFrame(app)
     # keep the window displaying
     app.mainloop()
-
-
-
-
