@@ -12,6 +12,7 @@ def indexOfStateInFrontier(stateAsString, frontier):
 
 
 class AStar:
+    maxDepth = 0
     def __init__(self, initialState, goalState):
         self.initialState = initialState
         self.goalState = goalState
@@ -34,6 +35,7 @@ class AStar:
                 return state
             # case not fount we expand and generate the children of the current state
             for neighbor in state.generateChildren():
+                maxDepth = max(maxDepth, neighbor.depth)
                 indexInFrontier = indexOfStateInFrontier(neighbor.stateAsString, frontier)
                 if not self.explored.__contains__(neighbor.stateAsString) and indexInFrontier == -1:
 
@@ -72,7 +74,7 @@ class AStar:
 
 
 astar = AStar(State("413026758"), State("012345678"))
-req = astar.search("manhattan")
+req = astar.search("7")
 req.printState()
 var = req.pathToGoal
 print(var)
