@@ -4,6 +4,7 @@ from tkinter import ttk
 
 class InitialStateFrame(ttk.Frame):
     def __init__(self, container):
+        self.container = container
         super().__init__(container)
         # field options
         options = {'padx': 5, 'pady': 5}
@@ -18,6 +19,7 @@ class InitialStateFrame(ttk.Frame):
         self.initial_state_entry.grid(column=1, row=0, **options)
         self.initial_state_entry.focus()
 
+        # run button
         self.run_button = ttk.Button(self, text='Run')
         self.run_button['command'] = self.run
         self.run_button.grid(column=2, row=0, sticky=tk.W, **options)
@@ -29,6 +31,12 @@ class InitialStateFrame(ttk.Frame):
         """  Handle button click event
         """
         print(self.initial_state.get())
+        if not TableFrame.created:
+            frame = TableFrame(self.container)
+            frame.create_board(self.initial_state.get())
+            TableFrame.created = True
+        else:
+            TableFrame.update_board(self.initial_state.get())
 
 
 class OptionMenu(ttk.OptionMenu):
@@ -65,20 +73,33 @@ class OptionMenu(ttk.OptionMenu):
 
 
 class TableFrame(ttk.Frame):
+    board = []
+    created = False
+
     def __init__(self, container):
         super().__init__(container)
-        # field options
+
+    def create_board(self, state):
         options = {'padx': 0, 'pady': 0, 'ipadx': 10, 'ipady': 10}
-        state = "012345678"
         index = 0
         for i in range(3):
+            self.board.append([])
             for j in range(3):
                 puzzle_entry = ttk.Button(self, text=state[index])
                 puzzle_entry.grid(column=j, row=i, **options)
+                self.board[i].append(puzzle_entry)
                 index = index + 1
 
         # add padding to the frame and show it
         self.grid(padx=10, pady=10, sticky=tk.NSEW)
+
+    @staticmethod
+    def update_board(state):
+        index = 0
+        for i in range(3):
+            for j in range(3):
+                TableFrame.board[i][j].configure(text=state[index])
+                index = index + 1
 
 
 class App(tk.Tk):
@@ -88,6 +109,7 @@ class App(tk.Tk):
         # configure the root window
         self.title('8-Puzzle')
         self.center_window()
+        self.resizable(False, False)
 
     def center_window(self):
         window_width = 600
@@ -109,6 +131,5 @@ if __name__ == "__main__":
     app = App()
     OptionMenu(app)
     InitialStateFrame(app)
-    TableFrame(app)
     # keep the window displaying
     app.mainloop()
