@@ -68,18 +68,13 @@ def dfs(initial_state, goal_test):
         if len(level_moves) == 0:
             max_search_depth = max(max_search_depth, len(levels_to_goal))
             levels_to_goal[len(levels_to_goal) - 1].pop()
-            while len(levels_to_goal[len(levels_to_goal) - 1]) == 0:
+            while len(levels_to_goal) != 0 and len(levels_to_goal[len(levels_to_goal) - 1]) == 0:
                 levels_to_goal.pop()
                 if len(levels_to_goal) > 0:
                     levels_to_goal[len(levels_to_goal) - 1].pop()
         else:
             levels_to_goal.append(level_moves)
+            max_search_depth = max(max_search_depth, len(levels_to_goal))
             nodes_expanded += 1
 
     print("There is no solution!")
-
-def main():
-    dfs(input("Enter the initial state: ").replace(",", ""), goal_test)
-
-if __name__ == "__main__":
-    main()
