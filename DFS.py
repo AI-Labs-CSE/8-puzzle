@@ -51,7 +51,7 @@ def dfs(initial_state, goal_test):
             print("nodes_expanded: " + str(nodes_expanded))
             print("search_depth: " + str(max_search_depth))
             print("running_time: " + str(end_time - start_time))
-            return
+            return path_to_goal
         
         current_coordinates = get_coordinates_of("0", state)
         level_moves = []
@@ -66,7 +66,6 @@ def dfs(initial_state, goal_test):
                     level_moves.append(move_name[i])
                     
         if len(level_moves) == 0:
-            max_search_depth = max(max_search_depth, len(levels_to_goal))
             levels_to_goal[len(levels_to_goal) - 1].pop()
             while len(levels_to_goal) != 0 and len(levels_to_goal[len(levels_to_goal) - 1]) == 0:
                 levels_to_goal.pop()
@@ -78,3 +77,4 @@ def dfs(initial_state, goal_test):
             nodes_expanded += 1
 
     print("There is no solution!")
+    return []
