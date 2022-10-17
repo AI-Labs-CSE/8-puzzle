@@ -1,5 +1,8 @@
 import tkinter as tk
 from tkinter import ttk
+import re
+import time
+import math
 
 
 class InitialStateFrame(ttk.Frame):
@@ -27,16 +30,34 @@ class InitialStateFrame(ttk.Frame):
         # add padding to the frame and show it
         self.grid(padx=10, pady=10, sticky=tk.NSEW)
 
+        # match the initial state pattern
+        self.output_label = ttk.Label(self, foreground='red')
+        self.output_label.grid(column=0, row=1, sticky=tk.W, **options)
+
     def run(self):
         """  Handle button click event
         """
-        print(self.initial_state.get())
+        state = self.initial_state.get()
+        print(state)
+        if re.search("[1-8 ]{9}", state) is None:
+            self.output_label['text'] = "you entered wrong state!"
+            return
+
+        TableFrame.empty_idx = self.get_empty_idx(state)
+        TableFrame.state = list(state)
         if not TableFrame.created:
             frame = TableFrame(self.container)
-            frame.create_board(self.initial_state.get())
+            frame.create_board(state)
             TableFrame.created = True
         else:
-            TableFrame.update_board(self.initial_state.get())
+            # TableFrame.update_board(state)
+            TableFrame.solve(["Up", "Left", "Left"])
+
+    def get_empty_idx(self, state):
+        for i in range(len(state)):
+            if state[i] == ' ':
+                return i
+        return -1
 
 
 class OptionMenu(ttk.OptionMenu):
@@ -75,19 +96,21 @@ class OptionMenu(ttk.OptionMenu):
 class TableFrame(ttk.Frame):
     board = []
     created = False
+    empty_idx = 0
+    state = list("")
 
     def __init__(self, container):
         super().__init__(container)
+        OptionMenu.__instance = self
 
     def create_board(self, state):
         options = {'padx': 0, 'pady': 0, 'ipadx': 10, 'ipady': 10}
         index = 0
         for i in range(3):
-            self.board.append([])
             for j in range(3):
                 puzzle_entry = ttk.Button(self, text=state[index])
                 puzzle_entry.grid(column=j, row=i, **options)
-                self.board[i].append(puzzle_entry)
+                self.board.append(puzzle_entry)
                 index = index + 1
 
         # add padding to the frame and show it
@@ -96,10 +119,32 @@ class TableFrame(ttk.Frame):
     @staticmethod
     def update_board(state):
         index = 0
-        for i in range(3):
-            for j in range(3):
-                TableFrame.board[i][j].configure(text=state[index])
-                index = index + 1
+        for i in range(9):
+            TableFrame.board[i].configure(text=state[index])
+            index = index + 1
+
+    @staticmethod
+    def solve(path):
+        new_idx = TableFrame.empty_idx
+        for x in path:
+            if x == "Up":
+                new_idx -= 3
+            elif x == "Down":
+                new_idx += 3
+            elif x == "Left":
+                new_idx -= 1
+            elif x == "Right":
+                new_idx += 1
+            print(f'new_idx:{new_idx} empty_idx:{TableFrame.empty_idx}')
+
+            TableFrame.board[TableFrame.empty_idx]['text'] = TableFrame.state[new_idx]
+            TableFrame.board[new_idx]['text'] = ' '
+
+            TableFrame.state[TableFrame.empty_idx] = TableFrame.state[new_idx]
+            TableFrame.state[new_idx] = ' '
+
+            TableFrame.empty_idx = new_idx
+            time.sleep(1)
 
 
 class App(tk.Tk):
