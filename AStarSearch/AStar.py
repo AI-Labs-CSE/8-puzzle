@@ -81,7 +81,7 @@ class AStar:
         searchDepth = neededState[1]
         if neededState[0] is None:
             print("No solution found")
-            return [],0,nodesExpanded, searchDepth, runningTime,
+            return [], 0, nodesExpanded, searchDepth, runningTime,
         pathToGoal = neededState[0].pathToGoal
         costOfPath = neededState[0].depth
 
@@ -89,11 +89,15 @@ class AStar:
 
     def printReport(self):
         report = self.getReport()
-        if report.__len__() > 0:
-            print("Path To Goal is : \n")
-            print(report[0])
-            print(f"\nCost To Path is : {report[1]} \n")
-            print(f"Number Of Expanded nodes is : {report[2]} \n")
-            print(f"Search Max Depth is : {report[3]}\n ")
-            print(f"Running Time is : {report[4]}")
+        print("Path To Goal is : \n")
+        print(report[0])
+        print(f"\nCost To Path is : {report[1]} \n")
+        print(f"Number Of Expanded nodes is : {report[2]} \n")
+        print(f"Search Max Depth is : {report[3]}\n ")
+        print(f"Running Time is : {report[4]}")
 
+initialState = State(867254301)
+goalState = State(123456780)
+astar = AStar(initialState, goalState, "euclidian")
+report = astar.getReport()
+print(report)
