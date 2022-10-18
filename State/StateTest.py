@@ -1,6 +1,6 @@
 import unittest
 
-from State.State import State
+from State import State
 
 
 class MyTestCase(unittest.TestCase):
