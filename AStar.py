@@ -14,22 +14,25 @@ class AStar:
 
     def search(self):
         maxDepth = 0
-        # I have make priority queue of frontier to push state into it based on the cost
+        # priority queue (frontier) to push state into it based on the cost
         # that should be equal to g(n) + h(n) cost is calculated from getCost based on heuristicsType
         frontier = []
         frontierSet = {self.initialState.stateSavedAsInt: 0}
         heapify(frontier)
-        heappush(frontier, (AStar.getCost(self, self.initialState), 0,
+        heappush(frontier, (self.getCost(self.initialState), 0,
                             self.initialState.stateSavedAsInt,
                             self.initialState))
-        # We will loop till frontier is not empty to search for the solution
+        # loop till frontier is not empty to search for the solution
         while not len(frontier) == 0:
-            state = heappop(frontier)[
-                3]  # We accessed index 2 as in priority queue we have tuple of (cost, stateString, state)
+            # We accessed index 2 as in priority queue we have tuple of (cost, stateString, state)
+            state = heappop(frontier)[3]
             # frontierSet.remove(state.stateAsString()
-            if self.goalState.stateSavedAsInt == state.stateSavedAsInt:  # If we found the needed state, so we are done and return the state
+
+            # If we found the needed state, so we are done and return the state
+            if self.goalState.stateSavedAsInt == state.stateSavedAsInt:
                 return state, maxDepth
-            self.explored.add(state.stateSavedAsInt)  # Add to the set of visited elements the current state as string
+
+            self.explored.add(state.stateSavedAsInt)
             # case not fount we expand and generate the children of the current state
             neighborPriority = 0
             for neighbor in state.generateChildren():
@@ -43,12 +46,12 @@ class AStar:
                                         neighbor))
                     frontierSet[neighbor.stateSavedAsInt] = cost
                 elif neighbor.stateSavedAsInt not in self.explored:
-                    if frontierSet[neighbor.stateSavedAsInt] > AStar.getCost(self, neighbor):
-                        heappush(frontier, (AStar.getCost(self, neighbor),
+                    if frontierSet[neighbor.stateSavedAsInt] > self.getCost(neighbor):
+                        heappush(frontier, (self.getCost(neighbor),
                                             neighborPriority,
                                             neighbor.stateSavedAsInt,
                                             neighbor))
-                        frontierSet[neighbor.stateSavedAsInt] = AStar.getCost(self, neighbor)
+                        frontierSet[neighbor.stateSavedAsInt] = self.getCost(neighbor)
         return None, maxDepth
 
     def printPath(self, state):
@@ -56,7 +59,7 @@ class AStar:
             self.printPath(state.parent)
         state.printState()
 
-    # we will assume that the cost of one move will be 1
+    # Assume that the cost of one move will be 1
     def getCost(self, state):
         stateAsString = state.stateAsString()
         goalState = self.goalState.stateAsString()
@@ -75,7 +78,7 @@ class AStar:
 
     def getReport(self):
         startTime = time.time()
-        neededState = AStar.search(self)
+        neededState = self.search()
         runningTime = time.time() - startTime
         nodesExpanded = len(self.explored)
         searchDepth = neededState[1]

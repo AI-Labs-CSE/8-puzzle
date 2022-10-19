@@ -1,15 +1,6 @@
 from tkinter import *
 from Utilities import get_coordinates_of
 
-# Change the position of the zero with the given values, also change the colors between red and black
-def change_position(row_change, col_change, position, labels):
-    labels[position[0]][position[1]]['text'] = labels[position[0] + row_change][position[1] + col_change]['text']
-    labels[position[0]][position[1]]['fg'] = '#000000'
-    labels[position[0] + row_change][position[1] + col_change]['text'] = '0'
-    labels[position[0] + row_change][position[1] + col_change]['fg'] = '#FF0000'
-    position[0] += row_change
-    position[1] += col_change
-    return position
 
 # Draw the initial state and make every move in the given array path_to_goal
 def visualize(initial_state, path_to_goal):
@@ -19,7 +10,8 @@ def visualize(initial_state, path_to_goal):
     root.columnconfigure(tuple(range(3)), weight = 1)
     root.rowconfigure(tuple(range(3)), weight = 1)
     
-    # Represent the labels in 2d array as a 3 * 3 grid with big bold font size, initialized with the initial state
+    # Represent the labels in 2d array as a 3 * 3 grid with big bold font size,
+    # initialized with the initial state
     labels = []
     for i in range(0, 3):
         temp = []
@@ -28,7 +20,8 @@ def visualize(initial_state, path_to_goal):
             temp[j].grid(row = i, column = j, sticky = NSEW)
         labels.append(temp)
 
-    # Get the coordinates of 0 in the initial state to keep track of its movement and change its color to red
+    # Get the coordinates of 0 in the initial state to keep track of 
+    # its movement and change its color to red
     position = get_coordinates_of("0", initial_state)
     labels[position[0]][position[1]]['fg'] = '#FF0000'
     
@@ -51,4 +44,13 @@ def visualize(initial_state, path_to_goal):
     root.after(1000, update, 0)
 
     root.mainloop()
-    
+
+# Change the position of the zero with the given values, also change the colors between red and black
+def change_position(row_change, col_change, position, labels):
+    labels[position[0]][position[1]]['text'] = labels[position[0] + row_change][position[1] + col_change]['text']
+    labels[position[0]][position[1]]['fg'] = '#000000'
+    labels[position[0] + row_change][position[1] + col_change]['text'] = '0'
+    labels[position[0] + row_change][position[1] + col_change]['fg'] = '#FF0000'
+    position[0] += row_change
+    position[1] += col_change
+    return position

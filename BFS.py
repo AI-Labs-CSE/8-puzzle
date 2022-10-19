@@ -1,63 +1,55 @@
 from queue import Queue
 import time
-from Utilities import print_res, to_string
-
-
-def valid(i, j):
-    if abs(j) == 1:
-        checker = i % 3
-        checker2 = (i + j) % 3
-        return (abs(checker2 - checker) == 1) and (((j+i) >= 0) and ((j+1) < 9))
-    else:
-        return i + j >= 0 and i+j < 9
+from Utilities import print_res, to_string, neighbors
 
 
 def bfs(initialState, goal_test):
-    #The array of all possible actions which are up down left right
-    offsets = [-3, 3, -1, 1]
     visited = set()
-    frontierSet = set()
+    frontier_set = set()
     frontier = Queue()
-    parentMap = dict()
+    parent_map = dict()
     start = time.time()
-    frontier.put(initialState)
-    frontierSet.add(initialState)
-    parentMap[initialState] = None
     depth = 0
-    solved = 0
+    solved = False
     nodesExplored = 0
+
+    frontier.put(initialState)
+    frontier_set.add(initialState)
+    parent_map[initialState] = None
+
     while not frontier.empty():
-        #Keep track of the current size of the queue to count the depth
+        # Keep track of the current size of the queue to count the depth
         size = frontier.qsize()
         for i in range(size):
             state = frontier.get()
-            frontierSet.remove(state)
+            frontier_set.remove(state)
             visited.add(state)
             state = str(state)
-            zeroIndex = state.find('0')
-            #if the number starts with 0 it will be pushed into the queue wtihout the 0 so we must check for that
-            if zeroIndex == -1:
+            zero_idx = state.find('0')
+            
+            # if the number starts with 0 it will be pushed into the queue wtihout the 0 
+            # so we must check for that
+            if zero_idx == -1:
                 state = '0' + state
-                zeroIndex = 0
+                zero_idx = 0
+
             if goal_test(to_string(state)):
-                solved = 1
+                solved = True
                 break
+
             nodesExplored = nodesExplored + 1
-            for j in offsets:
-                if valid(zeroIndex, j):
-                    asList = list(state)
-                    asList[zeroIndex] = asList[zeroIndex+j]
-                    asList[zeroIndex+j] = '0'
-                    pushState = int("".join(asList))
-                    if (not (pushState in visited)) and (not (pushState in frontierSet)):
-                        frontier.put(pushState)
-                        frontierSet.add(pushState)
-                        parentMap[pushState] = int(state)
+
+            for neighbor in neighbors(state, zero_idx):
+                neighbor = int(neighbor)
+                if (not (neighbor in visited)) and (not (neighbor in frontier_set)):
+                    frontier.put(neighbor)
+                    frontier_set.add(neighbor)
+                    parent_map[neighbor] = int(state)
         if solved:
             break
         depth = depth + 1
     end = time.time()
-    path = generateArray(parentMap)
+    path = generate_path_to_goal(parent_map)
     if path == None:
         print_res([], nodesExplored, depth, end - start)
         print("There is no solution!")
@@ -65,7 +57,25 @@ def bfs(initialState, goal_test):
     print_res(path, nodesExplored, depth, end - start)
     return path
 
-
+def generate_path_to_goal(parent_map):
+    path = []
+    if 12345678 not in parent_map:
+        return None
+    parent = parent_map[12345678]
+    current = 12345678
+    # Back track to the root node to build the path
+    while parent_map[current] is not None:
+        child = str(parent).find('0')
+        par = str(current).find('0')
+        if par == -1:
+            par = 0
+        if child == -1:
+            child = 0
+        path.append(direction(par, child))
+        current = parent
+        parent = parent_map[parent]
+    path.reverse()
+    return path
 
 def direction(child, parent):
     if (parent - child) == -3:
@@ -76,24 +86,3 @@ def direction(child, parent):
         return 'Left'
     if (parent - child) == 3:
         return 'Up'
-
-
-def generateArray(parentMap):
-    path = []
-    if 12345678 not in parentMap:
-        return None
-    parent = parentMap[12345678]
-    current = 12345678
-    # Back track to the root node to build the path
-    while parentMap[current] is not None:
-        child = str(parent).find('0')
-        par = str(current).find('0')
-        if par == -1:
-            par = 0
-        if child == -1:
-            child = 0
-        path.append(direction(par, child))
-        current = parent
-        parent = parentMap[parent]
-    path.reverse()
-    return path

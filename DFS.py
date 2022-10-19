@@ -24,7 +24,8 @@ def dfs(initial_state, goal_test):
     max_search_depth = 0
     
     start_time = time.time()
-    # Frontier have 2 synchronized data structures, a stack for the logic of dfs and a set to handle search in O(1) (same as explored)
+    # Frontier have 2 synchronized data structures, a stack for the logic of dfs 
+    # and a set to handle search in O(1) (same as explored)
     frontier_stack = [initial_state]
     frontier_set = {initial_state}
     explored = set()
@@ -44,11 +45,13 @@ def dfs(initial_state, goal_test):
             print_res(path_to_goal, nodes_expanded, max_search_depth, time.time() - start_time)
             return path_to_goal
         
-        # If it isn't the goal, increase nodes_explored counter, get the coordinates of the "0", and make array to hold the expanded new level
+        # If it isn't the goal, increase nodes_explored counter,
+        # get the coordinates of the "0", and make array to hold the expanded new level
         nodes_expanded += 1
         current_coordinates = get_coordinates_of("0", to_string(state))
         level_moves = []
-        # Try every valid move, apply the move to get the new state and add it to the frontier and the new level stack
+        # Try every valid move, apply the move to get the new state and add it to 
+        # the frontier and the new level stack
         for i in range(0, 4):
             new_row = current_coordinates[0] + move_row[i]
             new_col = current_coordinates[1] + move_col[i]
@@ -59,7 +62,8 @@ def dfs(initial_state, goal_test):
                     frontier_set.add(new_state)
                     level_moves.append(move_name[i])
                     
-        # If the node is a leaf remove it from its level stack, check if the level noe empty percolate up removing that child level
+        # If the node is a leaf remove it from its level stack, check if the 
+        # level noe empty percolate up removing that child level
         if len(level_moves) == 0:
             levels_to_goal[len(levels_to_goal) - 1].pop()
             while len(levels_to_goal) != 0 and len(levels_to_goal[len(levels_to_goal) - 1]) == 0:
