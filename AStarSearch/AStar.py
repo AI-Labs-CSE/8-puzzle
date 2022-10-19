@@ -24,9 +24,7 @@ class AStar:
                             self.initialState))
         # We will loop till frontier is not empty to search for the solution
         while not len(frontier) == 0:
-            state = heappop(frontier)[
-                3]  # We accessed index 2 as in priority queue we have tuple of (cost, stateString, state)
-            # frontierSet.remove(state.stateAsString()
+            state = heappop(frontier)[3]  # We accessed index 2 as in priority queue we have tuple of (cost, stateString, state)
             self.explored.add(state.stateSavedAsInt)  # Add to the set of visited elements the current state as string
             if self.goalState.stateSavedAsInt == state.stateSavedAsInt:  # If we found the needed state, so we are done and return the state
                 return state, maxDepth
@@ -97,8 +95,3 @@ class AStar:
         print(f"Search Max Depth is : {report[3]}\n ")
         print(f"Running Time is : {report[4]}")
 
-initialState = State(867254301)
-goalState = State(12345678)
-astar = AStar(initialState, goalState, "manhattan")
-report = astar.getReport()
-print(report)

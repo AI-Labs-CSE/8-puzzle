@@ -9,6 +9,7 @@ class State:
         self.parent = parent
         self.depth = depth
 
+
     def generateChildren(self):
         children = []
         for action in State.getActions(self):
