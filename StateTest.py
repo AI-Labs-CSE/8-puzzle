@@ -6,15 +6,15 @@ from State import State
 class MyTestCase(unittest.TestCase):
 
     def testGetPossibleActionsAllAvailable(self):
-        expActions = ["up", "down", "left", "right"]
+        expActions = ["Up", "Down", "Left", "Right"]
         self.assertEqual(expActions, State.getActions(State("142608735")))
 
     def testGetPossibleActionsDownRightOnlyAvailable(self):
-        expActions = ["down", "right"]
+        expActions = ["Down", "Right"]
         self.assertEqual(expActions, State.getActions(State("042618735")))
 
     def testGetPossibleActionsUpLeftOnlyAvailable(self):
-        expActions = ["up", "left"]
+        expActions = ["Up", "Left"]
         self.assertEqual(expActions, State.getActions(State("142658730")))
 
     def testGetAllPossibleChildren(self):

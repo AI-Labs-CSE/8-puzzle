@@ -2,7 +2,7 @@ import time
 from math import sqrt
 from heapq import heapify, heappush, heappop
 
-from State.State import State
+from State import State
 
 
 class AStar:
@@ -27,9 +27,9 @@ class AStar:
             state = heappop(frontier)[
                 3]  # We accessed index 2 as in priority queue we have tuple of (cost, stateString, state)
             # frontierSet.remove(state.stateAsString()
-            self.explored.add(state.stateSavedAsInt)  # Add to the set of visited elements the current state as string
             if self.goalState.stateSavedAsInt == state.stateSavedAsInt:  # If we found the needed state, so we are done and return the state
                 return state, maxDepth
+            self.explored.add(state.stateSavedAsInt)  # Add to the set of visited elements the current state as string
             # case not fount we expand and generate the children of the current state
             neighborPriority = 0
             for neighbor in state.generateChildren():
@@ -80,12 +80,11 @@ class AStar:
         nodesExpanded = len(self.explored)
         searchDepth = neededState[1]
         if neededState[0] is None:
-            print("No solution found")
-            return [], 0, nodesExpanded, searchDepth, runningTime,
+            return [], 0, nodesExpanded, searchDepth, runningTime, False
         pathToGoal = neededState[0].pathToGoal
         costOfPath = neededState[0].depth
 
-        return pathToGoal, costOfPath, nodesExpanded, searchDepth, runningTime
+        return pathToGoal, costOfPath, nodesExpanded, searchDepth, runningTime, True
 
     def printReport(self):
         report = self.getReport()
@@ -95,9 +94,3 @@ class AStar:
         print(f"Number Of Expanded nodes is : {report[2]} \n")
         print(f"Search Max Depth is : {report[3]}\n ")
         print(f"Running Time is : {report[4]}")
-
-initialState = State(867254301)
-goalState = State(123456780)
-astar = AStar(initialState, goalState, "euclidian")
-report = astar.getReport()
-print(report)

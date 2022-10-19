@@ -1,6 +1,6 @@
 from queue import Queue
 import time
-from Utilities import print_res
+from Utilities import print_res, to_string
 
 
 def valid(i, j):
@@ -32,7 +32,6 @@ def bfs(initialState, goal_test):
         for i in range(size):
             state = frontier.get()
             frontierSet.remove(state)
-            nodesExplored = nodesExplored + 1
             visited.add(state)
             state = str(state)
             zeroIndex = state.find('0')
@@ -40,9 +39,10 @@ def bfs(initialState, goal_test):
             if zeroIndex == -1:
                 state = '0' + state
                 zeroIndex = 0
-            if goal_test(state):
+            if goal_test(to_string(state)):
                 solved = 1
                 break
+            nodesExplored = nodesExplored + 1
             for j in offsets:
                 if valid(zeroIndex, j):
                     asList = list(state)

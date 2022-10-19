@@ -1,35 +1,35 @@
 import unittest
 
 from AStar import AStar
-from State.State import State
+from State import State
 
 
 class MyTestCase(unittest.TestCase):
     def testEasyPuzzleManhattan(self):
         astar = AStar(State(125340678), State(12345678), "manhattan")
         report = astar.getReport()
-        self.assertEqual(report[0], ["up", "left", "left"])
+        self.assertEqual(report[0], ["Up", "Left", "Left"])
 
     def testEasyPuzzleEuclidian(self):
         astar = AStar(State(125340678), State(12345678), "euclidian")
         report = astar.getReport()
-        self.assertEqual(report[0], ["up", "left", "left"])
+        self.assertEqual(report[0], ["Up", "Left", "Left"])
 
     def testSolvePuzzleWithDepth27Manhattan(self):
         astar = AStar(State(54861732), State(12345678), "manhattan")
         report = astar.getReport()
         self.assertEqual(report[0],
-                         ['right', 'right', 'down', 'left', 'left', 'down', 'right', 'up', 'right', 'down', 'left',
-                          'up', 'left', 'down', 'right', 'up', 'up', 'left', 'down', 'right', 'up', 'right', 'down',
-                          'left', 'left', 'up'])
+                         ['Right', 'Right', 'Down', 'Left', 'Left', 'Down', 'Right', 'Up', 'Right', 'Down', 'Left',
+                          'Up', 'Left', 'Down', 'Right', 'Up', 'Up', 'Left', 'Down', 'Right', 'Up', 'Right', 'Down',
+                          'Left', 'Left', 'Up'])
 
     def testSolvePuzzleWithDepth27Euclidian(self):
         astar = AStar(State(54861732), State(12345678), "euclidian")
         report = astar.getReport()
         self.assertEqual(report[0],
-                         ['right', 'down', 'left', 'down', 'right', 'up', 'right', 'down', 'left', 'left', 'up', 'up',
-                          'right', 'down', 'left', 'up', 'right', 'right', 'down', 'left', 'down', 'left', 'up',
-                          'right', 'up', 'left'])
+                         ['Right', 'Down', 'Left', 'Down', 'Right', 'Up', 'Right', 'Down', 'Left', 'Left', 'Up', 'Up',
+                          'Right', 'Down', 'Left', 'Up', 'Right', 'Right', 'Down', 'Left', 'Down', 'Left', 'Up',
+                          'Right', 'Up', 'Left'])
 
     # this state is made to dimostrant that a* is better in case of manhattan than euclidian
     # because in bid test cases manhattan hs less expand nodes than euclidian
@@ -46,9 +46,9 @@ class MyTestCase(unittest.TestCase):
         astar = AStar(initialState, goalState, "manhattan")
         report = astar.getReport()
         self.assertEqual(report[0],
-                         ['right', 'up', 'up', 'left', 'left', 'down', 'down', 'right', 'right', 'up', 'left', 'left',
-                          'down', 'right', 'right', 'up', 'left', 'up', 'right', 'down', 'left', 'up', 'left', 'down',
-                          'down', 'right', 'right', 'up', 'left', 'down', 'right'])
+                         ['Right', 'Up', 'Up', 'Left', 'Left', 'Down', 'Down', 'Right', 'Right', 'Up', 'Left', 'Left',
+                          'Down', 'Right', 'Right', 'Up', 'Left', 'Up', 'Right', 'Down', 'Left', 'Up', 'Left', 'Down',
+                          'Down', 'Right', 'Right', 'Up', 'Left', 'Down', 'Right'])
 
     def testComplexProblemeEuclidian(self):
         initialState = State(867254301)
@@ -56,9 +56,9 @@ class MyTestCase(unittest.TestCase):
         astar = AStar(initialState, goalState, "euclidian")
         report = astar.getReport()
         self.assertEqual(report[0],
-                         ['left', 'up', 'right', 'up', 'right', 'down', 'down', 'left', 'up', 'up', 'right', 'down',
-                          'down', 'left', 'up', 'left', 'up', 'right', 'right', 'down', 'left', 'left', 'down', 'right',
-                          'up', 'left', 'up', 'right', 'down', 'right', 'down'])
+                         ['Left', 'Up', 'Right', 'Up', 'Right', 'Down', 'Down', 'Left', 'Up', 'Up', 'Right', 'Down',
+                          'Down', 'Left', 'Up', 'Left', 'Up', 'Right', 'Right', 'Down', 'Left', 'Left', 'Down', 'Right',
+                          'Up', 'Left', 'Up', 'Right', 'Down', 'Right', 'Down'])
 
     def testUnsolvableManhattan(self):
         initialState = State(812043765)
