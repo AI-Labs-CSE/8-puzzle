@@ -42,23 +42,24 @@ class State:
             child = child[:index] + child[index + 1] + '0' + child[index + 2:]
         return int(child)
 
-    # this function get the all possible action that are possible to perform from this state
     def getActions(self):
         actions = []
         index = self.stateAsString().index('0')
-        if index > sqrt(len(self.stateAsString())) - 1:
+        rowSize = sqrt(len(self.stateAsString()))
+        if index > rowSize - 1:
             actions.append("up")
-        if index < len(self.stateAsString()) - sqrt(len(self.stateAsString())):
+        if index < len(self.stateAsString()) - rowSize:
             actions.append("down")
-        if index % sqrt(len(self.stateAsString())) != 0:
+        if index % rowSize != 0:
             actions.append("left")
-        if index % sqrt(len(self.stateAsString())) != sqrt(len(self.stateAsString())) - 1:
+        if index % rowSize != rowSize - 1:
             actions.append("right")
         return actions
 
     def printState(self):
+        rowSize = sqrt(len(self.stateAsString()))
         for i in range(0, len(self.stateAsString())):
             print(self.stateAsString()[i], end=" ")
-            if i % sqrt(len(self.stateAsString())) == sqrt(len(self.stateAsString())) - 1:
+            if i % rowSize == rowSize - 1:
                 print("\n")
         print("\n")
