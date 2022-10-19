@@ -1,15 +1,13 @@
 import tkinter as tk
 from tkinter import ttk
-import re
 import time
-import math
 
 
 class InitialStateFrame(ttk.Frame):
     def __init__(self, container):
         self.container = container
         super().__init__(container)
-        # field options
+
         options = {'padx': 5, 'pady': 5}
 
         # initial state label
@@ -30,28 +28,17 @@ class InitialStateFrame(ttk.Frame):
         # add padding to the frame and show it
         self.grid(padx=10, pady=10, sticky=tk.NSEW)
 
-        # match the initial state pattern
-        self.output_label = ttk.Label(self, foreground='red')
-        self.output_label.grid(column=0, row=1, sticky=tk.W, **options)
-
     def run(self):
         """  Handle button click event
         """
         state = self.initial_state.get()
         print(state)
-        if re.search("[1-8 ]{9}", state) is None:
-            self.output_label['text'] = "you entered wrong state!"
-            return
 
         TableFrame.empty_idx = self.get_empty_idx(state)
         TableFrame.state = list(state)
-        if not TableFrame.created:
-            frame = TableFrame(self.container)
-            frame.create_board(state)
-            TableFrame.created = True
-        else:
-            # TableFrame.update_board(state)
-            TableFrame.solve(["Up", "Left", "Left"])
+
+        # TableFrame.update_board(state)
+        TableFrame.show_solution(["Up", "Left", "Left"])
 
     def get_empty_idx(self, state):
         for i in range(len(state)):
@@ -89,19 +76,18 @@ class OptionMenu(ttk.OptionMenu):
         self.output_label = ttk.Label(container, foreground='red')
         self.output_label.grid(column=1, row=1, sticky=tk.W, **paddings)
 
-    def option_changed(self, *args):
+    def option_changed(self):
         self.output_label['text'] = f'You selected: {self.option_var.get()}'
 
 
 class TableFrame(ttk.Frame):
     board = []
-    created = False
     empty_idx = 0
     state = list("")
 
     def __init__(self, container):
         super().__init__(container)
-        OptionMenu.__instance = self
+        self.container = container
 
     def create_board(self, state):
         options = {'padx': 0, 'pady': 0, 'ipadx': 10, 'ipady': 10}
@@ -122,9 +108,11 @@ class TableFrame(ttk.Frame):
         for i in range(9):
             TableFrame.board[i].configure(text=state[index])
             index = index + 1
+        # TODO
+        # send this state to solver base on algorithm type
 
     @staticmethod
-    def solve(path):
+    def show_solution(path):
         new_idx = TableFrame.empty_idx
         for x in path:
             if x == "Up":
@@ -137,11 +125,9 @@ class TableFrame(ttk.Frame):
                 new_idx += 1
             print(f'new_idx:{new_idx} empty_idx:{TableFrame.empty_idx}')
 
-            TableFrame.board[TableFrame.empty_idx]['text'] = TableFrame.state[new_idx]
-            TableFrame.board[new_idx]['text'] = ' '
-
             TableFrame.state[TableFrame.empty_idx] = TableFrame.state[new_idx]
             TableFrame.state[new_idx] = ' '
+            TableFrame.create_board(TableFrame.state)
 
             TableFrame.empty_idx = new_idx
             time.sleep(1)
@@ -153,10 +139,10 @@ class App(tk.Tk):
 
         # configure the root window
         self.title('8-Puzzle')
-        self.center_window()
         self.resizable(False, False)
+        self._center_window()
 
-    def center_window(self):
+    def _center_window(self):
         window_width = 600
         window_height = 400
 
@@ -176,5 +162,7 @@ if __name__ == "__main__":
     app = App()
     OptionMenu(app)
     InitialStateFrame(app)
+    frame = TableFrame(app)
+    frame.create_board("12534 678")
     # keep the window displaying
     app.mainloop()

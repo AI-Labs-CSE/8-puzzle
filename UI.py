@@ -72,8 +72,7 @@ class Board(ttk.Frame):
             self.state[new_idx] = ' '
             self.hole_idx = new_idx
 
-            self.update_board()
-            time.sleep(1)
+            self.after(1000, self.update_board)
 
     def update_button_text(self, idx, text):
         self.board[idx].config(text=text)
@@ -144,7 +143,8 @@ class InitialStateFrame(ttk.Frame):
         print(state)
 
         self.board.state = list(state)
-        self.board.update_board()
+
+        # self.after(0, self.board.update_board)
 
         self.board.hole_idx = self.get_hole_idx(state)
         # TODO
