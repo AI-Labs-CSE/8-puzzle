@@ -62,14 +62,15 @@ class AStar:
         goalState = self.goalState.stateAsString()
         h = 0
         for cell in range(0, len(stateAsString)):
-            currentCellX = int(int(goalState[cell]) / int(sqrt(len(stateAsString))))
-            goalX = int(int(stateAsString[cell]) / int(sqrt(len(stateAsString))))
-            currentCellY = int(goalState[cell]) % int(sqrt(len(stateAsString)))
-            goalY = int(int(stateAsString[cell]) % int(sqrt(len(stateAsString))))
-            if self.heuristicsType == "manhattan":
-                h += abs(currentCellX - goalX) + abs(currentCellY - goalY)
-            else:
-                h += sqrt((currentCellX - goalX) ** 2 + (currentCellY - goalY) ** 2)
+            if stateAsString[cell] != '0':
+                currentCellX = int(int(goalState[cell]) / int(sqrt(len(stateAsString))))
+                goalX = int(int(stateAsString[cell]) / int(sqrt(len(stateAsString))))
+                currentCellY = int(goalState[cell]) % int(sqrt(len(stateAsString)))
+                goalY = int(int(stateAsString[cell]) % int(sqrt(len(stateAsString))))
+                if self.heuristicsType == "manhattan":
+                    h += abs(currentCellX - goalX) + abs(currentCellY - goalY)
+                else:
+                    h += sqrt((currentCellX - goalX) ** 2 + (currentCellY - goalY) ** 2)
 
         return int(state.depth + h)
 
@@ -97,7 +98,7 @@ class AStar:
         print(f"Running Time is : {report[4]}")
 
 initialState = State(867254301)
-goalState = State(123456780)
-astar = AStar(initialState, goalState, "euclidian")
+goalState = State(12345678)
+astar = AStar(initialState, goalState, "manhattan")
 report = astar.getReport()
 print(report)
