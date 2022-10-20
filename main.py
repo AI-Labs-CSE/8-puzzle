@@ -1,5 +1,5 @@
 import BFS, DFS, Visualizer, Utilities
-from AStar.AStar import AStar
+from AStarSearch.AStar import AStar
 from State.State import State
 
 def valid_initial_state(state):

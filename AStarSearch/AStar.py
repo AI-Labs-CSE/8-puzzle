@@ -76,11 +76,11 @@ class AStar:
         searchDepth = neededState[1]
         if neededState[0] is None:
             print("No solution found")
-            return [], 0, nodesExpanded, searchDepth, runningTime,
+            return [], 0, nodesExpanded, searchDepth, runningTime, False
         pathToGoal = neededState[0].pathToGoal
         costOfPath = neededState[0].depth
 
-        return pathToGoal, costOfPath, nodesExpanded, searchDepth, runningTime
+        return pathToGoal, costOfPath, nodesExpanded, searchDepth, runningTime, True
 
     def printReport(self):
         report = self.getReport()
