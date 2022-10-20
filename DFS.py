@@ -41,8 +41,9 @@ def dfs(initial_state, goal_test):
         if goal_test(to_string(state)):
             for i in levels_to_goal:
                 path_to_goal.append(i[len(i) - 1])
-            print_res(path_to_goal, nodes_expanded, max_search_depth, time.time() - start_time)
-            return path_to_goal
+            end_time = time.time()
+            print_res(path_to_goal, nodes_expanded, max_search_depth, end_time - start_time)
+            return path_to_goal, nodes_expanded, max_search_depth, end_time - start_time
         
         # If it isn't the goal, increase nodes_explored counter, get the coordinates of the "0", and make array to hold the expanded new level
         nodes_expanded += 1
