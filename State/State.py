@@ -37,7 +37,7 @@ class State:
                 sqrt(len(self.stateAsString())))] + '0' + child[index + int(sqrt(len(self.stateAsString()))) + 1:]
         elif action == "left":
             child = child[:index - 1] + '0' + child[index - 1] + child[index + 1:]
-        elif action == "right":
+        elif action == "Right":
             child = child[:index] + child[index + 1] + '0' + child[index + 2:]
         return int(child)
 

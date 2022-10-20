@@ -6,17 +6,17 @@ from State import State
 class MyTestCase(unittest.TestCase):
 
     def testGetPossibleActionsAllAvailable(self):
-        expActions = ["up", "down", "left", "right"]
+        expActions = ["Up", "Down", "Left", "Right"]
         state = State(142608735)
         self.assertEqual(expActions, state.getActions())
 
     def testGetPossibleActionsDownRightOnlyAvailable(self):
-        expActions = ["down", "right"]
+        expActions = ["Down", "Right"]
         state = State(42618735)
         self.assertEqual(expActions, state.getActions())
 
     def testGetPossibleActionsUpLeftOnlyAvailable(self):
-        expActions = ["up", "left"]
+        expActions = ["Up", "Left"]
         state =State(142658730)
         self.assertEqual(expActions, state.getActions())
 
