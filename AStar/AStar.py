@@ -2,7 +2,7 @@ import time
 from math import sqrt
 from heapq import heapify, heappush, heappop
 
-from State import State
+from State.State import State
 
 
 class AStar:

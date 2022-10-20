@@ -1,6 +1,6 @@
 import BFS, DFS, Visualizer, Utilities
-from AStar import AStar
-from State import State
+from AStar.AStar import AStar
+from State.State import State
 
 def valid_initial_state(state):
     allowed = {"0", "1", "2", "3", "4", "5", "6", "7", "8"}
@@ -25,7 +25,7 @@ def main():
         if res != False:
             Visualizer.visualize(initial_state, res[0])
     elif type == "2":
-        initial_state = input("Enter the initial state: ").replace(",", "")
+        initial_state = input("Enter the initial state ex(1,0,2,3,4,5,6,7,8): ").replace(",", "")
         if not valid_initial_state(initial_state):
             print("Not valid initial state!")
             return
@@ -33,7 +33,7 @@ def main():
         if res != False:
             Visualizer.visualize(initial_state, res[0])
     elif type == "3":
-        initial_state = input("Enter the initial state: ").replace(",", "")
+        initial_state = input("Enter the initial state ex(1,0,2,3,4,5,6,7,8): ").replace(",", "")
         if not valid_initial_state(initial_state):
             print("Not valid initial state!")
             return
@@ -45,7 +45,7 @@ def main():
         else:
             print("There is no solution!")
     elif type == "4":
-        initial_state = input("Enter the initial state: ").replace(",", "")
+        initial_state = input("Enter the initial state ex(1,0,2,3,4,5,6,7,8): ").replace(",", "")
         if not valid_initial_state(initial_state):
             print("Not valid initial state!")
             return

@@ -1,7 +1,7 @@
 import unittest
 
-from AStar import AStar
-from State import State
+from AStar.AStar import AStar
+from State.State import State
 
 
 class MyTestCase(unittest.TestCase):
