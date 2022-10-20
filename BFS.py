@@ -1,6 +1,6 @@
 from queue import Queue
 import time
-from Utilities import print_res, to_string
+from Utilities import print_res
 
 
 def valid(i, j):
@@ -39,7 +39,7 @@ def bfs(initialState, goal_test):
             if zeroIndex == -1:
                 state = '0' + state
                 zeroIndex = 0
-            if goal_test(to_string(state)):
+            if goal_test(state):
                 solved = 1
                 break
             nodesExplored = nodesExplored + 1
@@ -63,7 +63,7 @@ def bfs(initialState, goal_test):
         print("There is no solution!")
         return False
     print_res(path, nodesExplored, depth, end - start)
-    return path
+    return path, nodesExplored, depth, end - start
 
 
 

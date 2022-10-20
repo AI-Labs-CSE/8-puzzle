@@ -1,44 +1,50 @@
 import unittest
 
-from State import State
+from State.State import State
 
 
 class MyTestCase(unittest.TestCase):
 
     def testGetPossibleActionsAllAvailable(self):
         expActions = ["Up", "Down", "Left", "Right"]
-        self.assertEqual(expActions, State.getActions(State("142608735")))
+        state = State(142608735)
+        self.assertEqual(expActions, state.getActions())
 
     def testGetPossibleActionsDownRightOnlyAvailable(self):
         expActions = ["Down", "Right"]
-        self.assertEqual(expActions, State.getActions(State("042618735")))
+        state = State(42618735)
+        self.assertEqual(expActions, state.getActions())
 
     def testGetPossibleActionsUpLeftOnlyAvailable(self):
         expActions = ["Up", "Left"]
-        self.assertEqual(expActions, State.getActions(State("142658730")))
+        state =State(142658730)
+        self.assertEqual(expActions, state.getActions())
 
     def testGetAllPossibleChildren(self):
-        expChildren = ["102648735", "142638705", "142068735", "142680735"]
-        children = State.generateChildren(State("142608735"))
+        expChildren = [102648735, 142638705, 142068735, 142680735]
+        state = State(142608735)
+        children = state.generateChildren()
         childrenString = []
         for child in children:
-            childrenString.append(child.state)
+            childrenString.append(child.stateSavedAsInt)
         self.assertEqual(expChildren, childrenString)
 
     def testGetAllPossibleChildrenDownRightOnlyAvailable(self):
-        expChildren = ["642018735", "402618735"]
-        children = State.generateChildren(State("042618735"))
+        expChildren = [642018735, 402618735]
+        state = State(42618735)
+        children = state.generateChildren()
         childrenString = []
         for child in children:
-            childrenString.append(child.state)
+            childrenString.append(child.stateSavedAsInt)
         self.assertEqual(expChildren, childrenString)
 
     def testGetAllPossibleChildrenUpLeftOnlyAvailable(self):
-        expChildren = ["142650738", "142658703"]
-        children = State.generateChildren(State("142658730"))
+        expChildren = [142650738, 142658703]
+        state = State(142658730)
+        children = state.generateChildren()
         childrenString = []
         for child in children:
-            childrenString.append(child.state)
+            childrenString.append(child.stateSavedAsInt)
         self.assertEqual(expChildren, childrenString)
 
 

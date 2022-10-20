@@ -1,7 +1,7 @@
 import unittest
 
-from AStar import AStar
-from State import State
+from AStar.AStar import AStar
+from State.State import State
 
 
 class MyTestCase(unittest.TestCase):
@@ -18,22 +18,14 @@ class MyTestCase(unittest.TestCase):
     def testSolvePuzzleWithDepth27Manhattan(self):
         astar = AStar(State(54861732), State(12345678), "manhattan")
         report = astar.getReport()
-        self.assertEqual(report[0],
-                         ['Right', 'Right', 'Down', 'Left', 'Left', 'Down', 'Right', 'Up', 'Right', 'Down', 'Left',
-                          'Up', 'Left', 'Down', 'Right', 'Up', 'Up', 'Left', 'Down', 'Right', 'Up', 'Right', 'Down',
-                          'Left', 'Left', 'Up'])
+        self.assertEqual(report[1], 26)
 
     def testSolvePuzzleWithDepth27Euclidian(self):
         astar = AStar(State(54861732), State(12345678), "euclidian")
         report = astar.getReport()
-        self.assertEqual(report[0],
-                         ['Right', 'Down', 'Left', 'Down', 'Right', 'Up', 'Right', 'Down', 'Left', 'Left', 'Up', 'Up',
-                          'Right', 'Down', 'Left', 'Up', 'Right', 'Right', 'Down', 'Left', 'Down', 'Left', 'Up',
-                          'Right', 'Up', 'Left'])
+        self.assertEqual(report[1], 26)
 
-    # this state is made to dimostrant that a* is better in case of manhattan than euclidian
-    # because in bid test cases manhattan hs less expand nodes than euclidian
-    def testcompareExpandOfPuzzleWithDepth27ManhattanAndEuclidian(self):
+    def testCompareExpandOfPuzzleWithDepth27ManhattanAndEuclidian(self):
         astarM = AStar(State(54861732), State(12345678), "manhattan")
         reportM = astarM.getReport()
         astarD = AStar(State(54861732), State(12345678), "euclidian")
@@ -45,20 +37,14 @@ class MyTestCase(unittest.TestCase):
         goalState = State(123456780)
         astar = AStar(initialState, goalState, "manhattan")
         report = astar.getReport()
-        self.assertEqual(report[0],
-                         ['Right', 'Up', 'Up', 'Left', 'Left', 'Down', 'Down', 'Right', 'Right', 'Up', 'Left', 'Left',
-                          'Down', 'Right', 'Right', 'Up', 'Left', 'Up', 'Right', 'Down', 'Left', 'Up', 'Left', 'Down',
-                          'Down', 'Right', 'Right', 'Up', 'Left', 'Down', 'Right'])
+        self.assertEqual(report[1],31)
 
-    def testComplexProblemeEuclidian(self):
+    def testComplexProblemEuclidian(self):
         initialState = State(867254301)
         goalState = State(123456780)
         astar = AStar(initialState, goalState, "euclidian")
         report = astar.getReport()
-        self.assertEqual(report[0],
-                         ['Left', 'Up', 'Right', 'Up', 'Right', 'Down', 'Down', 'Left', 'Up', 'Up', 'Right', 'Down',
-                          'Down', 'Left', 'Up', 'Left', 'Up', 'Right', 'Right', 'Down', 'Left', 'Left', 'Down', 'Right',
-                          'Up', 'Left', 'Up', 'Right', 'Down', 'Right', 'Down'])
+        self.assertEqual(report[1], 31)
 
     def testUnsolvableManhattan(self):
         initialState = State(812043765)
