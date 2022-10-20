@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
 
-from AStar.AStar import AStar
+from AStarSearch.AStar import AStar
 from State.State import State
 
 testCases = [125340678, 618402735, 864213570, 54861732, 867254301, 87654321]  # 5 test cases
@@ -51,5 +51,3 @@ def manhattanVsEuclidian():
     plt.savefig("TimeOfSearching.png")
     plt.show()
 
-if __name__ == '__main__':
-    manhattanVsEuclidian()
