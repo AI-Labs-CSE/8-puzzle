@@ -27,15 +27,15 @@ class State:
     def generateChild(self, action):
         child = self.stateAsString()
         index = child.index('0')
-        if action == "up":
+        if action == "Up":
             child = child[:index - int(sqrt(len(self.stateAsString())))] + '0' + child[
                                                                                  index - int(sqrt(
                                                                                      len(self.stateAsString()))) + 1:index] + \
                     child[index - int(sqrt(len(self.stateAsString())))] + child[index + 1:]
-        elif action == "down":
+        elif action == "Down":
             child = child[:index] + child[index + int(sqrt(len(self.stateAsString())))] + child[index + 1:index + int(
                 sqrt(len(self.stateAsString())))] + '0' + child[index + int(sqrt(len(self.stateAsString()))) + 1:]
-        elif action == "left":
+        elif action == "Left":
             child = child[:index - 1] + '0' + child[index - 1] + child[index + 1:]
         elif action == "Right":
             child = child[:index] + child[index + 1] + '0' + child[index + 2:]
@@ -46,13 +46,13 @@ class State:
         index = self.stateAsString().index('0')
         rowSize = sqrt(len(self.stateAsString()))
         if index > rowSize - 1:
-            actions.append("up")
+            actions.append("Up")
         if index < len(self.stateAsString()) - rowSize:
-            actions.append("down")
+            actions.append("Down")
         if index % rowSize != 0:
-            actions.append("left")
+            actions.append("Left")
         if index % rowSize != rowSize - 1:
-            actions.append("right")
+            actions.append("Right")
         return actions
 
     def printState(self):
