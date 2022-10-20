@@ -48,21 +48,8 @@ class AStar:
                                             neighbor.stateSavedAsInt,
                                             neighbor))
                         frontierSet[neighbor.stateSavedAsInt] = AStar.getCost(self, neighbor)
+
         return None, maxDepth
-
-    def addStateToFrontier(self, frontier,frontierSet , state):
-        cost = AStar.getCost(self, state)
-        heappush(frontier, (cost,
-                            state,
-                            state.depth,
-                            state.stateSavedAsInt,
-                            state))
-        frontierSet[state.stateSavedAsInt] = cost
-
-    def printPath(self, state):
-        if state.parent is not None:
-            self.printPath(state.parent)
-        state.printState()
 
     def getCost(self, state):
         stateAsString = state.stateAsString()
@@ -104,7 +91,3 @@ class AStar:
         print(f"Search Max Depth is : {report[3]}\n ")
         print(f"Running Time is : {report[4]}")
 
-
-astar = AStar(State(123456780), State(12345678), "manhattan")
-report = astar.getReport()
-print(report)
