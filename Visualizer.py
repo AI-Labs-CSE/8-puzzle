@@ -1,8 +1,16 @@
 from tkinter import *
 from Utilities import get_coordinates_of
 
+index = -1
+stop = True
+labels = []
+position = []
+path_to_goal = []
+root = None
+
 # Change the position of the zero with the given values, also change the colors between red and black
-def change_position(row_change, col_change, position, labels):
+def change_position(row_change, col_change):
+    global labels, position
     labels[position[0]][position[1]]['text'] = labels[position[0] + row_change][position[1] + col_change]['text']
     labels[position[0]][position[1]]['fg'] = '#000000'
     labels[position[0] + row_change][position[1] + col_change]['text'] = '0'
@@ -11,13 +19,76 @@ def change_position(row_change, col_change, position, labels):
     position[1] += col_change
     return position
 
+def update():
+    global index, stop, path_to_goal, root
+    
+    if not stop:
+        if index >= len(path_to_goal):
+            return
+        index += 1
+        if index >= len(path_to_goal):
+            return
+        
+        if path_to_goal[index] == 'Up':
+            change_position(-1, 0)
+        elif path_to_goal[index] == 'Down':
+            change_position(1, 0)
+        elif path_to_goal[index] == 'Left':
+            change_position(0, -1)
+        elif path_to_goal[index] == 'Right':
+            change_position(0, 1)
+    
+    root.after(1000, update)
+        
+def play():
+    global stop
+    stop = False
+
+def pause():
+    global stop
+    stop = True
+    
+def back():
+    global index, stop, path_to_goal
+    stop = True
+    if index < 0:
+        return
+    index -= 1        
+    if path_to_goal[index + 1] == 'Up':
+        change_position(1, 0)
+    elif path_to_goal[index + 1] == 'Down':
+        change_position(-1, 0)
+    elif path_to_goal[index + 1] == 'Left':
+        change_position(0, 1)
+    elif path_to_goal[index + 1] == 'Right':
+        change_position(0, -1)
+
+def next():
+    global index, stop, path_to_goal
+    stop = True
+    if index >= len(path_to_goal):
+        return
+    index += 1
+    if index >= len(path_to_goal):
+        return
+    if path_to_goal[index] == 'Up':
+        change_position(-1, 0)
+    elif path_to_goal[index] == 'Down':
+        change_position(1, 0)
+    elif path_to_goal[index] == 'Left':
+        change_position(0, -1)
+    elif path_to_goal[index] == 'Right':
+        change_position(0, 1)
+
 # Draw the initial state and make every move in the given array path_to_goal
-def visualize(initial_state, path_to_goal):
+def visualize(initial_state, moves):
+    global labels, position, path_to_goal, root
+    path_to_goal = moves
     # Make a fixed size window
     root = Tk()
     root.geometry("400x400")
     root.columnconfigure(tuple(range(3)), weight = 1)
-    root.rowconfigure(tuple(range(3)), weight = 1)
+    root.rowconfigure(tuple(range(5)), weight = 1)
     
     # Represent the labels in 2d array as a 3 * 3 grid with big bold font size, initialized with the initial state
     labels = []
@@ -32,23 +103,12 @@ def visualize(initial_state, path_to_goal):
     position = get_coordinates_of("0", initial_state)
     labels[position[0]][position[1]]['fg'] = '#FF0000'
     
-    # Function that is called periodically with the index of the next move to apply
-    def update(index):
-        if index == len(path_to_goal):
-            return
-        
-        if path_to_goal[index] == 'Up':
-            change_position(-1, 0, position, labels)
-        elif path_to_goal[index] == 'Down':
-            change_position(1, 0, position, labels)
-        elif path_to_goal[index] == 'Left':
-            change_position(0, -1, position, labels)
-        elif path_to_goal[index] == 'Right':
-            change_position(0, 1, position, labels)
-            
-        root.after(1000, update, index + 1)
-        
-    root.after(1000, update, 0)
-
+    Button(root, text = "Play", command = play).grid(row = 3, column = 0,  sticky = NSEW)
+    Button(root, text = "Pause", command = pause).grid(row = 3, column = 2,  sticky = NSEW)
+    Button(root, text = "Back", command = back).grid(row = 4, column = 0,  sticky = NSEW)
+    Button(root, text = "Next", command = next).grid(row = 4, column = 2,  sticky = NSEW)
+    
+    root.after(1000, update)
+    
     root.mainloop()
     
