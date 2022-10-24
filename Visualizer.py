@@ -9,13 +9,13 @@ position = []
 path_to_goal = []
 root = None
 
-# Draw the initial state and make every move in the given array path_to_goal
 def visualize(initial_state, moves):
+    """ Draw the initial state and make every move in the given array path_to_goal
+    """
     global labels, position, path_to_goal, root
     path_to_goal = moves
     
     root = create_root_window()
-    
     labels = create_board_labels(initial_state)
 
     # Get the coordinates of 0 in the initial state to keep track of its movement and change its color to red
@@ -56,21 +56,17 @@ def create_board_labels(initial_state):
 def update():
     global index, stop, path_to_goal, root
     
-    if not stop:
-        if index >= len(path_to_goal):
-            return
+    if not stop and not index >= len(path_to_goal):
         index += 1
-        if index >= len(path_to_goal):
-            return
-        
-        if path_to_goal[index] == 'Up':
-            change_position(-1, 0)
-        elif path_to_goal[index] == 'Down':
-            change_position(1, 0)
-        elif path_to_goal[index] == 'Left':
-            change_position(0, -1)
-        elif path_to_goal[index] == 'Right':
-            change_position(0, 1)
+        if index < len(path_to_goal):  
+            if path_to_goal[index] == 'Up':
+                change_position(-1, 0)
+            elif path_to_goal[index] == 'Down':
+                change_position(1, 0)
+            elif path_to_goal[index] == 'Left':
+                change_position(0, -1)
+            elif path_to_goal[index] == 'Right':
+                change_position(0, 1)
     
     root.after(1000, update)
 
@@ -100,7 +96,9 @@ def back():
     stop = True
     if index < 0:
         return
-    index -= 1    
+    elif index == len(path_to_goal):
+        index -= 1
+    index -= 1
     if path_to_goal[index + 1] == 'Up':
         change_position(1, 0)
     elif path_to_goal[index + 1] == 'Down':
